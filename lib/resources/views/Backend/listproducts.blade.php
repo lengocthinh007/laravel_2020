@@ -1,6 +1,36 @@
 @extends('Backend.master')
 @section('title','Danh sách sản phẩm')
-@section('main')        
+@section('main')
+<style type="text/css">
+  .stars-outer {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.stars-outer::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #ccc;
+}
+
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  color: #f8ce0b;
+}
+</style>        
               @include('error.note')
                <div class="row">
                 	<div class="col-sm-12">
@@ -27,23 +57,45 @@
                   <thead>
                     <tr class="bg-primary" style="color: white">
                       <th>ID</th>
-                      <th width="30%">Name</th>
-                      <th>Price</th>
-                      <th>Date</th>
+                      <th width="30%">Tên</th>
+                      <th>Hình</th>
+                      <th>Thời gian</th>
                        <th>Trạng Thái</th>
                        <th>Nổi Bật</th>
-                       <th>Cate</th>
+                       <th>Danh mục</th>
                       <th>Tùy chọn</th>
                     </tr>
                   </thead>
                   <tbody>
                     <?php $stt=0 ?>
                     @foreach($data as $pro)
-                    <?php $stt= $stt + 1 ?>
+                    <?php $stt= $stt + 1;
+                      $age = 0;
+                      $star=0;
+                      if($pro->pro_total_rating)
+                      {
+                        $age = round($pro->pro_total_number / $pro->pro_total_rating,1);
+                        $star = ($age / 5)*100;
+                      }
+                    ?>
                 <tr>
                   <td>{!! $stt !!}</td>
-                  <td>{!! $pro->name !!}</td>
-                  <td>{!! number_format($pro->price),0,",","." !!}VNĐ</td>
+                  <td>
+                        {!! $pro->name !!}
+                    <ul style="margin:0px;list-style: none">
+                      <li><span>Giá {!!number_format($pro->price,0,',','.') !!}(đ)</i></span></li>
+                      <li><span>KM {!! $pro->pro_sale !!}(%)</i></span></li>
+                      <li style="margin-top: 0px"><span>Số lượng: {{$pro->pro_number}}</span></li>
+                      <li><span>Đánh Giá</span>
+                         <div class="stars-outer">
+                            <div class="stars-inner" style="width:{{$star}}%"></div>
+                        </div>
+                      <span class="number-rating">{{$age}}</span>
+                    </li>
+                   
+                    </ul>
+                  </td>
+                  <td><img src="{{asset('public/Hinh/'.$pro->image)}}" width="100px"></td>
                   <td>
                     {!! \Carbon\Carbon::createFromTimeStamp(strtotime($pro->created_at))->diffForHumans() !!}
                   </td>

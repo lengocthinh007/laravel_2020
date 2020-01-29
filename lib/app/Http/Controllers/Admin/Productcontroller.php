@@ -15,7 +15,7 @@ use App\Http\Requests\product;
 class Productcontroller extends Controller
 {
     public function listProduct(Request $request){
-        $data = products::select('id','name','price','cate_id','created_at','pro_active','pro_hot');
+        $data = products::select('id','name','price','cate_id','pro_total_rating','pro_total_number','created_at','pro_active','pro_hot','pro_sale','image','pro_number');
         $cate = cates::select('id','name','parent_id')->get()->toArray();
          if($request->name)
          {
@@ -87,6 +87,7 @@ class Productcontroller extends Controller
         $product->alias = changeTitle($request->name);
         $product->price = $request->price;
         $product->pro_sale = $request->Sale;
+        $product->pro_number = $request->pro_number;
         $product->pro_title_seo  = $request->title ? $request->title  : $request->name;
         $product->pro_content = $request->content ?  $request->content : '';
         $product->description_seo  = $request->description_seo;

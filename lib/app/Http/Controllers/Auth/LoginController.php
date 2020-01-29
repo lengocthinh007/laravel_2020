@@ -40,7 +40,7 @@ class LoginController extends Controller
         if(Auth::attempt($arr,$remember)){
             return redirect()->intended('/');
         }else{
-            return back()->withInput()->with('message','Tài khoản hoặc mật khẩu không đúng');
+            return back()->withInput()->with(['level'=>'danger','message'=>'Tài khoản hoặc mật khẩu không đúng']);
         }
     }
     public function logout()

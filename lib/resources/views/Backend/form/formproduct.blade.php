@@ -45,9 +45,13 @@
                     <label>Price</label>
                     <input required type="number" name="price" class="form-control" value="{!! old('price',isset($data) ? $data['price'] : 0) !!}">
                   </div>    
-                     <div class="form-group" >
+                  <div class="form-group" >
                     <label>Sale</label>
                     <input required type="number" name="Sale" class="form-control" value="{!! old('Sale',isset($data) ? $data['pro_sale'] : 0) !!}">
+                  </div>   
+                  <div class="form-group" >
+                    <label>Số lượng</label>
+                    <input required type="number" name="pro_number" class="form-control" value="{!! old('pro_number',isset($data) ? $data['pro_number'] : 0) !!}">
                   </div>    
                     <div class="form-group" >
                     <label>Ảnh sản phẩm </label>

@@ -1,6 +1,11 @@
 @extends('frontend.master')
 @section('title','Shop')
 @section('main') 
+<style type="text/css">
+	.acti{
+		color:#007bff !important;
+	}
+</style>
 <div class="home">
 		<div class="home_background parallax-window" data-parallax="scroll" data-image-src="images/shop_background.jpg"></div>
 		<div class="home_overlay"></div>
@@ -53,16 +58,24 @@
 							</ul>
 						</div>
 						<div class="sidebar_section">
-							<div class="sidebar_subtitle brands_subtitle">Brands</div>
+							<div class="sidebar_subtitle brands_subtitle">Khoảng Giá</div>
 							<ul class="brands_list">
-								<li class="brand"><a href="#">Apple</a></li>
-								<li class="brand"><a href="#">Beoplay</a></li>
-								<li class="brand"><a href="#">Google</a></li>
-								<li class="brand"><a href="#">Meizu</a></li>
-								<li class="brand"><a href="#">OnePlus</a></li>
-								<li class="brand"><a href="#">Samsung</a></li>
-								<li class="brand"><a href="#">Sony</a></li>
-								<li class="brand"><a href="#">Xiaomi</a></li>
+								<?php $a=Request::url() ?>
+								<li class="brand">
+									<a class="{{Request::get('price')==1?'acti':''}}" href="{{request()->fullUrlWithQuery(['price'=>1])}}">Dưới 1.000.000</a>
+								</li>
+								<li class="brand">
+									<a class="{{Request::get('price')==2?'acti':''}}" href="{{request()->fullUrlWithQuery(['price'=>2])}}">1.000.000 - 3.000.000</a>
+								</li>
+								<li class="brand">
+									<a class="{{Request::get('price')==3?'acti':''}}" href="{{request()->fullUrlWithQuery(['price'=>3])}}">3.000.000 - 5.000.000</a></li>
+								<li class="brand">
+									<a class="{{Request::get('price')==4?'acti':''}}" href="{{request()->fullUrlWithQuery(['price'=>4])}}">5.000.000 - 7.000.000</a></li>
+								<li class="brand">
+									<a class="{{Request::get('price')==5?'acti':''}}" href="{{request()->fullUrlWithQuery(['price'=>5])}}">7.000.000 - 10.000.000</a></li>
+								<li class="brand">
+									<a class="{{Request::get('price')==6?'acti':''}}" href="{{request()->fullUrlWithQuery(['price'=>6])}}">Lớn hơn 10.000.000</a>
+								</li>
 							</ul>
 						</div>
 					</div>
@@ -76,19 +89,36 @@
 					<div class="shop_content">
 						<div class="shop_bar clearfix">
 							<div class="shop_product_count"><span>186</span> {{$cate->name}}</div>
-							<div class="shop_sorting">
-								<span>Sort by:</span>
+							<form id="form_order" method="get">
+								<div class="shop_sorting">
+								<span>Sắp xếp:</span>
 								<ul>
-									<li>
-										<span class="sorting_text">highest rated<i class="fas fa-chevron-down"></span></i>
-										<ul>
-											<li class="shop_sorting_button" data-isotope-option='{ "sortBy": "original-order" }'>highest rated</li>
-											<li class="shop_sorting_button" data-isotope-option='{ "sortBy": "name" }'>name</li>
-											<li class="shop_sorting_button"data-isotope-option='{ "sortBy": "price" }'>price</li>
+									<li><select name="orderby" class="orderby" style="text-decoration: none;color: black;border-bottom: none;">
+										<span class="sorting_text">Theo<i class="fas fa-chevron-down"></span></i>
+										<ul> 
+											
+											<option value="md" {{Request::get('orderby')=='md'||Request::get('orderby')?'selected':''}}>
+													<li class="shop_sorting_button" >Mặc định</li>
+											</option>
+											<option  value="desc" {{Request::get('orderby')=='desc'?'selected':''}}>
+											<li class="shop_sorting_button">Mới Nhất</li>
+											</option>
+											<option value="asc" {{Request::get('orderby')=='asc'?'selected':''}}>
+											<li class="shop_sorting_button" >Sản phẩm cũ</li>
+											</option>
+											<option value="price_max" {{Request::get('orderby')=='price_max'?'selected':''}}>
+											<li class="shop_sorting_button" >Giá tăng dần</li>
+											</option>
+											<option value="price_min" {{Request::get('orderby')=='price_min'?'selected':''}}>
+											<li class="shop_sorting_button" >Giá giảm dần</li>
+											</option>
+											
 										</ul>
+										</select>
 									</li>
 								</ul>
 							</div>
+							</form>
 						</div>
 						@if(isset($products))
 						<div class="product_grid">
@@ -137,4 +167,13 @@
 			</div>
 		</div>
 	</div>
+@stop
+@section('script')
+<script type="text/javascript">
+	$(function(){
+		$('.orderby').change(function(){
+			$("#form_order").submit();
+		});
+	});
+</script> 
 @stop

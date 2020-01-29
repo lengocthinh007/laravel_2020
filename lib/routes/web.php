@@ -15,6 +15,18 @@ Route::get('/','Homecontroller@getHome');
 Route::get('loaisanpham/{id}/{alias}','Frontendcontroller@getloaisanpham');
 Route::get('Details/{id}/{alias}','Frontendcontroller@getdetails');
 
+Route::get('lien-he','Contactcontroller@getcontact');
+Route::post('lien-he','Contactcontroller@postcontact');
+
+Route::group(['prefix'=>'thanh-toan','middleware'=>'CheckLoginUser'],function(){
+	Route::get('/','Cartcontroller@thanhtoan');
+	Route::post('/','Cartcontroller@savethanhtoan');
+});
+
+Route::group(['prefix'=>'ajax','middleware'=>'CheckLoginUser'],function(){
+	Route::post('/danh-gia/{id}','Ratingcontroller@saverating');
+});
+
 Route::group(['namespace'=>'Auth'],function(){
 		Route::get('dang-ky','Registercontroller@getregister');
 		Route::post('dang-ky','Registercontroller@postregister');
@@ -64,6 +76,8 @@ Route::group(['namespace'=>'Admin'],function(){
 		});
 		Route::group(['prefix'=>'transaction'],function(){
 		Route::get('/','Admintransactioncontroller@index')->name('admin.transaction.index');
+		Route::get('/view{id}','Admintransactioncontroller@vieworder')->name('admin.transaction.index');
+		Route::get('/active/{id}','Admintransactioncontroller@activetransaction');
 		});
 	});
 });
