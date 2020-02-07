@@ -21,10 +21,6 @@ class LoginController extends Controller
     |
     */
 
-   
-
-   
-     
     public function getlogin()
     {
         return view('Backend.Auth.login');
@@ -47,5 +43,26 @@ class LoginController extends Controller
     {
         Auth::logout();
         return redirect()->intended('/');
+    }
+
+
+    public function getloginadmin()
+    {
+        return view('Backend.Auth.loginadmin');
+    }
+
+    public function postLoginadmin(Request $request){
+        $data = $request->only('email','password');
+        if(Auth::guard('admin')->attempt($data)){
+            return redirect()->intended('admin/home');
+        }else{
+            return back()->withInput()->with(['level'=>'danger','message'=>'Tài khoản hoặc mật khẩu không đúng']);
+        }
+    }
+
+      public function logoutadmin()
+    {
+        Auth::guard('admin')->logout();
+        return redirect()->intended('Admin/login');
     }
 }

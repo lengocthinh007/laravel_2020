@@ -102,6 +102,7 @@
 </head>
 <body>
 <div class="signup-form">
+   @include('error.note')
     <form method="post">
        {{csrf_field()}}
     <h2>Register</h2>

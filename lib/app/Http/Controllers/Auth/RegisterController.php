@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Mail;
 
 class RegisterController extends Controller
 {
@@ -31,15 +33,58 @@ class RegisterController extends Controller
     }
     public function postregister(Request $request)
     {
+          $this->validate($request,
+            [
+                'Name'=>'unique:users,name',
+            ],
+            [
+                'Name.unique'=>'Tên danh mục đã bị trùng'
+                  
+            ]);
         $user = new User();
         $user->name = $request->Name;
         $user->email = $request->Email;
         $user->phone = $request->phone;
         $user->password = bcrypt($request->Password);
         $user->save();
-        if($user->id){
+        if($user->id)
+        {
+            $email=$user->email;
+            $code=bcrypt(md5(time().$email));
+            $url = route('verify.account',['code'=>$code,'id'=>$user->id]);
+            $user->code_active=$code;
+            $user->time_active = Carbon::now();
+            $user->save();
+
+            $data=[
+            'route'=>$url,
+            ];
+
+              Mail::send('Backend.Auth.verifyaccount', $data, function ($message) use ($email) {
+                 $message->from('lengocthinh006@gmail.com', 'Thinhpro');
+                 $message->to($email,$email);
+                 $message->subject('Xác Nhận Mật Khẩu!');
+                 });
+
             return redirect()->intended('dang-nhap');
         }
             return redirect()->back();
     }
+
+    public function verifyaccount(Request $request)
+      {
+        $code = $request->code;
+        $id = $request->id;
+        $checkUser= User::where([
+            'code_active'=>$code,
+            'id'=>$id
+        ])->first();
+        if(!$checkUser)
+        {
+            return redirect('/')->with(['level'=>'danger','message'=>'Đường dẫn xác nhận không tồn tại']);
+        }
+        $checkUser->active=2;
+        $checkUser->save();
+        return redirect()->route('User.home')->with(['level'=>'success','message'=>'Xác  nhận tài khoản thành công']);
+      }
 }

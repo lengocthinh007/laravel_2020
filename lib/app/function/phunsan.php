@@ -97,4 +97,30 @@ function get_data_user($type,$field = 'id')
    return Auth::guard($type)->user() ? Auth::guard($type)->user()->$field : '';
 }
 
+function doimau($str,$key)
+{
+   return str_replace($key, "<span style='color:red'>$key</span>", $str);
+}
+
+function paginate($currentPage,$lastPage)
+  {
+    $pagination = [$currentPage];
+     while (count($pagination) < 5) {
+        $left = $pagination[0] - 1; 
+       $right = $pagination[count($pagination) - 1] + 1; 
+       $added = false; 
+       if ($left > 0) {
+           array_unshift($pagination, $left); 
+           $added = true;
+       }
+       if ($right <= $lastPage) {
+           array_push($pagination, $right);
+           $added = true;
+       }
+       if (!$added) { 
+           break;
+       }
+   }
+      return $pagination;
+  }
 ?>

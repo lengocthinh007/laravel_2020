@@ -118,7 +118,7 @@ div.section > div > input {margin:0;padding-left:5px;font-size:10px;padding-righ
   <div class="container" style="margin-top: 50px">
       @include('error.note')
         	<div class="row">
-               <div class="col-xs-5 item-photo">
+               <div class="col-xs-5 item-photo" id="conten_product" data-id="{{$products->id}}">
                     <img style="max-width:100%;width: 250px" src="{{asset('public/Hinh/'.$products->image)}}" />
                 </div>
                 <div class="col-xs-7" style="border:0px solid gray">
@@ -128,7 +128,7 @@ div.section > div > input {margin:0;padding-left:5px;font-size:10px;padding-righ
         			<?php
         			 $age = 0;
                      $star = 0;
-                      if($products->pro_total_rating)
+                      if($products->pro_total_rating !=0)
                       {
                         $age = round($products->pro_total_number / $products->pro_total_rating,1);
                         $star = ($age / 5)*100;
@@ -200,13 +200,22 @@ div.section > div > input {margin:0;padding-left:5px;font-size:10px;padding-righ
             		</b>
             	</div>
             		<div class="list_rating" style="width: 60%;padding: 20px">
+                        <?php
+                        $i=1;
+                        if($arrayrating==null)
+                        {
+                            $arrayrating=[1,2,3,4,5];
+                        }
+                        ?>
             			@foreach($arrayrating as $key => $arrayrating)
             			<?php
+                        $itemage=0;
+                        if($products->pro_total_rating !=0)
             			$itemage = round(($arrayrating['total'] / $products->pro_total_rating)*100);
             			?>
             	<div class="item_rating" style="display: flex;align-items: center;">
             			<div style="width: 10%">
-            					{{$key}}<span class="fa fa-star"></span>	
+            					{{$i++}}<span class="fa fa-star"></span>
             			</div>
             			<div style="width: 70%;margin:0 20px">
             				 <span style="width: 100%;height: 8px;display: block;border: 1px solid #dedede;border-radius: 5px;background-color: #e9e9e9">
@@ -248,7 +257,7 @@ div.section > div > input {margin:0;padding-left:5px;font-size:10px;padding-righ
             	@foreach($listrating as $item)
             	<div class="rating_item" style="margin-bottom: 20px">
             		<div>
-            			<span>{{$item->user->name}}</span>
+            			<span>{{isset($item->user->name)?$item->user->name:''}}</span>
             			<a href="" style="color:#2ba832"><i class="fas fa-check"></i>  Đã mua hàng tại web</a>
             		</div>
             		<p style="margin-bottom: 0px">
@@ -342,8 +351,30 @@ div.section > div > input {margin:0;padding-left:5px;font-size:10px;padding-righ
 			}
 		});
 
+        //luu san pham vua xem
+        //luu id san pham vao store
+       let idproduct = $('#conten_product').attr('data-id');
+       //lay gia tri storage
+       let products = localStorage.getItem('products');
 
+       if(products==null)
+       {
+        arrayProduct = new Array();
+        arrayProduct.push(idproduct);
+        localStorage.setItem('products',JSON.stringify(arrayProduct));
+       }
+       else
+       {
+        //chuyen ve mang
+            products = $.parseJSON(products);
+            if(products.indexOf(idproduct)==-1)
+            {
+                products.push(idproduct);
+                localStorage.setItem('products',JSON.stringify(products));
+            }
+       }
 
+       
 		
 
 		//giao dien

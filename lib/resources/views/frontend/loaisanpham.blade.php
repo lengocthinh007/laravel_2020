@@ -88,7 +88,12 @@
 
 					<div class="shop_content">
 						<div class="shop_bar clearfix">
-							<div class="shop_product_count"><span>186</span> {{$cate->name}}</div>
+							@if(isset($cate->name))
+							<div class="shop_product_count">{{$cate->name}}</div>
+							@endif
+							@if(isset($key) && $key!='')
+							<div class="shop_product_count"><b>Tìm Kiếm : {{$key}}</b></div>
+							@endif
 							<form id="form_order" method="get">
 								<div class="shop_sorting">
 								<span>Sắp xếp:</span>
@@ -131,7 +136,7 @@
 								<div class="product_image d-flex flex-column align-items-center justify-content-center"><img src="{{asset('public/Hinh/'.$item->image)}}" alt=""></div>
 								<div class="product_content">
 									<div class="product_price">{!! number_format($item->price,0,',','.') !!}</div>
-									<div class="product_name"><div><a href="" tabindex="0">{!! $item->name !!}</a></div></div>
+									<div class="product_name"><div><a href="" tabindex="0">{!! doimau($item->name,$key) !!}</a></div></div>
 								</div>
 
 								<div class="product_fav"><i class="fas fa-heart"></i></div>
@@ -148,17 +153,29 @@
 						@endif
 
 						<!-- Shop Page Navigation -->
-
+				<?php
+				  $pagination = paginate($products->currentPage(),$products->lastPage());
+				?>
 						<div class="shop_page_nav d-flex flex-row">
-							<div class="page_prev d-flex flex-column align-items-center justify-content-center"><i class="fas fa-chevron-left"></i></div>
+							@if($pagination[0] != $products->currentPage())
+							<a href="{!! $products->appends($query)->url($products->currentPage()-1) !!}">
+								<div class="page_prev d-flex flex-column align-items-center justify-content-center"><i class="fas fa-chevron-left">
+							</i></div>
+							</a>
+							@endif
 							<ul class="page_nav d-flex flex-row">
-								<li><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">...</a></li>
-								<li><a href="#">21</a></li>
+							@foreach($pagination as $i)
+							<li class="paginate_button page-item {!! ($i==$products->currentPage())?'active':'' !!}">
+                             <a href="{!! $products->appends($query)->url($i) !!}" class="page-link">{{$i}}</a>
+                   			</li>
+                   			@endforeach
+							<!-- {!! $products->appends($query)->Links() !!} -->
 							</ul>
-							<div class="page_next d-flex flex-column align-items-center justify-content-center"><i class="fas fa-chevron-right"></i></div>
+							@if($pagination[count($pagination) - 1] != $products->currentPage())
+							<a href="{!! $products->appends($query)->url($products->currentPage()+1) !!}">
+								<div class="page_next d-flex flex-column align-items-center justify-content-center"><i class="fas fa-chevron-right"></i></div>
+							</a>
+							@endif
 						</div>
 
 					</div>

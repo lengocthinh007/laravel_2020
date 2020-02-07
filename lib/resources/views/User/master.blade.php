@@ -48,7 +48,7 @@
           <a class="dropdown-item" href="#">{{get_data_user('admin','name')}}</a>
           <a class="dropdown-item" href="#">Settings</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Đăng xuất</a>
         </div>
       </li>
     </ul>
@@ -60,9 +60,9 @@
     <!-- Sidebar -->
     <ul class="sidebar navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="{{asset('admin/home')}}">
+        <a class="nav-link" href="{{asset('User/home')}}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span>
+          <span class="{{\Request::route()->getName()=='User.home'?'acti':''}}">Tổng Quang</span>
         </a>
       </li>
       <li class="nav-item dropdown">
@@ -70,39 +70,25 @@
        
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{asset('admin/category')}}">
+        <a class="nav-link" href="{{asset('User/infor')}}">
           <i class="fas fa-fw fa-folder"></i>
           <span 
-          class="{{\Request::route()->getName()=='admin.cate.list'?'acti':''}}" >
-              Quản lí Danh Mục
+          class="{{\Request::route()->getName()=='User.infor'?'acti':''}}" >
+            Thông Tin
         </span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{asset('admin/product')}}">
+        <a class="nav-link" href="{{asset('User/password')}}">
           <i class="fas fa-fw fa-table"></i>
-          <span class="{{\Request::route()->getName()=='admin.cate.pro'?'acti':''}}">Quản lí Sản phẩm</span></a>
-      </li>
-       <li class="nav-item">
-        <a class="nav-link" href="{{asset('admin/transaction')}}">
-          <i class="fas fa-fw fa-table"></i>
-          <span class="{{\Request::route()->getName()=='admin.transaction.index'?'acti':''}}">Quản lí đơn hàng</span></a>
-      </li>
-       <li class="nav-item">
-        <a class="nav-link" href="{{asset('admin/user')}}">
-          <i class="fas fa-fw fa-table"></i>
-          <span class="{{\Request::route()->getName()=='admin.user.index'?'acti':''}}">Quản lí thành viên</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{asset('admin/kho')}}">
-          <i class="fas fa-fw fa-table"></i>
-          <span class="{{\Request::route()->getName()=='kho'?'acti':''}}">Kho</span></a>
+          <span class="{{\Request::route()->getName()=='User.password'?'acti':''}}">Password</span></a>
       </li>
     </ul>
-
     <div id="content-wrapper">
 
       <div class="container-fluid">
-
+       @if(get_data_user('web','active')==1)
+        <p class="alert alert-danger">Tài khoản của bạn chưa kích hoạt. Hãy check địa chỉ email của bạn để kích hoạt</p>
+        @endif
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
@@ -112,6 +98,7 @@
         </ol>
 
         <!-- Page Content -->
+       
       
           @yield('main')
        
@@ -146,7 +133,7 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="{{asset('Admin/logout')}}">Logout</a>
+          <a class="btn btn-primary" href="{{asset('dang-xuat')}}">Logout</a>
         </div>
       </div>
     </div>

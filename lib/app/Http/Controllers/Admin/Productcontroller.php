@@ -10,8 +10,6 @@ use App\Models\product_image;
 use Illuminate\Support\Str;
 use App\Http\Requests\product;
 
-
-
 class Productcontroller extends Controller
 {
     public function listProduct(Request $request){

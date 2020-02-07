@@ -110,11 +110,11 @@
         </div> 
         <div class="form-group small clearfix">
             <label class="checkbox-inline"><input type="checkbox"> Remember me</label>
-            <a href="{{asset('lay-lai-mat-khau')}}" class="forgot-link">Quên mật khẩu?</a>
+            <a href="#" class="forgot-link">Forgot Password?</a>
         </div> 
         <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">              
     </form>     
-    <div class="text-center small">Don't have an account? <a href="{{asset('dang-ky')}}">Đăng Ký</a></div>
+    <div class="text-center small">Don't have an account? <a href="{{asset('Authadmin/login')}}">Sign up</a></div>
 </div>
 </body>
 </html>                                                               

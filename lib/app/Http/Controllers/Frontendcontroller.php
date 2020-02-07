@@ -14,12 +14,26 @@ class Frontendcontroller extends Controller
     	$menu = cates::all();
     	View::share('menu',$menu);
     }
-       public function getloaisanpham(Request $request,$id){
-    	$products = products::where([
-    		'cate_id'=> $id,
-    		'pro_active'=> products::STATUS_PUBLIC
-    	]);
+       public function getloaisanpham(Request $request)
+    {
+        $id = \Request::segment(2);
+        $products = products::where('pro_active',products::STATUS_PUBLIC);
+        $cateproduct=[];
+        $key='';
+        if($id)
+        {
+            $cateproduct = cates::select('name')->find($id);
+            $products = products::where([
+                'cate_id'=> $id,
+            ]);
+        }
 
+        if($request->k)
+        {
+            $key=$request->k;
+            $products->where('name','like','%'.$request->k.'%');
+        }
+       
         if($request->price)
         {
             $price=$request->price;
@@ -67,13 +81,17 @@ class Frontendcontroller extends Controller
             }
         }
 
-        $products=$products->paginate(10);
+        $products=$products->paginate(1);
 
     	$cate = cates::select('name')->find($id);
     	$viewdata = [
+            'cateproduct'=>$cateproduct,
     		'products'=>$products,
-    		'cate'=>$cate
+    		'cate'=>$cate,
+            'query'=>$request->query(),
+            'key'=>$key
     	];
+
     	return view ('frontend.loaisanpham',$viewdata);
     }
      public function getdetails($id){
