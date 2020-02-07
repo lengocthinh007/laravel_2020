@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 12, 2020 lúc 03:51 AM
+-- Thời gian đã tạo: Th2 07, 2020 lúc 09:10 AM
 -- Phiên bản máy phục vụ: 10.1.38-MariaDB
 -- Phiên bản PHP: 7.3.2
 
@@ -21,6 +21,32 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `nono`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `admin`
+--
+
+CREATE TABLE `admin` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` char(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1',
+  `password` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `admin`
+--
+
+INSERT INTO `admin` (`id`, `name`, `email`, `phone`, `avatar`, `active`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(4, 'Thịnh Lê', 'admin@abc', NULL, NULL, 1, '$2y$10$eESookUL5Je9.riyUOu4ce3/53h4z4OENitFtsb99tgsy8GGyDXmW', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -48,6 +74,31 @@ INSERT INTO `cates` (`id`, `name`, `alias`, `order`, `parent_id`, `keywords`, `d
 (1, 'Điện thoại đẹp', 'dien-thoai-dep', 2, 0, 'fd', 'fds', '2020-01-02 20:03:41', '2020-01-02 20:03:41'),
 (2, 'Iphone 2', 'iphone-2', 1, 1, 'Iphone 2', 'Iphone 2', '2020-01-06 02:03:26', '2020-01-06 02:03:26'),
 (3, 'SamSung', 'samsung', 2, 0, 'SamSung', 'SamSung', '2020-01-06 02:03:52', '2020-01-06 02:03:52');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `contact`
+--
+
+CREATE TABLE `contact` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `c_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `c_email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `c_title` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `c_content` text COLLATE utf8mb4_unicode_ci,
+  `c_status` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `contact`
+--
+
+INSERT INTO `contact` (`id`, `c_name`, `c_email`, `c_title`, `c_content`, `c_status`, `created_at`, `updated_at`) VALUES
+(1, 'nobita', 'nobita@abc', 'chào', 'hello', 0, NULL, NULL),
+(2, 'dsad', 'dsd', 'ds', 'dsds', 0, '2020-01-20 08:22:27', '2020-01-20 08:22:27');
 
 -- --------------------------------------------------------
 
@@ -87,7 +138,31 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (18, '2019_12_06_025848_cates', 1),
 (19, '2019_12_06_030322_products', 1),
 (20, '2019_12_06_032107_product_images', 1),
-(21, '2020_01_02_091118_after_product', 2);
+(21, '2020_01_02_091118_after_product', 2),
+(22, '2020_01_20_144913_contact', 3),
+(23, '2020_01_21_150650_transaction', 4),
+(24, '2020_01_21_150729_order', 4),
+(25, '2020_01_21_150757_after_product_2', 4),
+(26, '2020_01_27_101736_rating', 5),
+(27, '2020_01_27_101809_after_product_3', 5),
+(28, '2020_02_02_100431_admin', 6);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `order`
+--
+
+CREATE TABLE `order` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `transaction_id` int(11) NOT NULL DEFAULT '0',
+  `product_id` int(11) NOT NULL DEFAULT '0',
+  `qty` tinyint(4) NOT NULL DEFAULT '0',
+  `price` int(11) NOT NULL DEFAULT '0',
+  `sale` int(11) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -125,15 +200,28 @@ CREATE TABLE `products` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `pro_title_seo` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pro_content` longtext COLLATE utf8mb4_unicode_ci
+  `pro_content` longtext COLLATE utf8mb4_unicode_ci,
+  `pro_pay` tinyint(4) NOT NULL DEFAULT '0',
+  `pro_number` tinyint(4) NOT NULL DEFAULT '0',
+  `pro_total_rating` int(11) NOT NULL DEFAULT '0' COMMENT 'Tổng số đánh giá',
+  `pro_total_number` int(11) NOT NULL DEFAULT '0' COMMENT 'Tổng số điểm đánh giá'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `alias`, `price`, `pro_sale`, `pro_active`, `pro_hot`, `pro_view`, `image`, `keywords_seo`, `description`, `description_seo`, `user_id`, `cate_id`, `created_at`, `updated_at`, `pro_title_seo`, `pro_content`) VALUES
-(2, 'iphone 9', 'iphone-9', 5000000, 200000, 1, 1, 0, 'best_6.png', NULL, 'a', 'd', 1, 1, '2020-01-02 20:08:31', '2020-01-07 00:55:51', 'c', 'b');
+INSERT INTO `products` (`id`, `name`, `alias`, `price`, `pro_sale`, `pro_active`, `pro_hot`, `pro_view`, `image`, `keywords_seo`, `description`, `description_seo`, `user_id`, `cate_id`, `created_at`, `updated_at`, `pro_title_seo`, `pro_content`, `pro_pay`, `pro_number`, `pro_total_rating`, `pro_total_number`) VALUES
+(2, 'Điện Thoại Vsmart Star - Hàng chính hãng', 'dien-thoai-vsmart-star-hang-chinh-hang', 2000000, 30, 1, 0, 0, 'xwBv_view_3.jpg', NULL, 'i', 'hhhhhhhh', 1, 3, '2020-02-02 07:55:45', '2020-02-02 08:46:19', 'b', 'a', 0, 10, 1, 3),
+(3, 'Điện Thoại Samsung Galaxy Note 10 Plus (256GB/12GB) - Hàng Chính Hãng - Đã Kích Hoạt Bảo Hành Điện Tử', 'dien-thoai-samsung-galaxy-note-10-plus-256gb-12gb-hang-chinh-hang-da-kich-hoat-bao-hanh-dien-tu', 3000000, 60, 1, 0, 0, 'view_2.jpg', NULL, 'i', 'u', 1, 3, '2020-02-07 03:59:06', '2020-02-07 03:59:06', 'Điện Thoại Samsung Galaxy Note 10 Plus (256GB/12GB) - Hàng Chính Hãng - Đã Kích Hoạt Bảo Hành Điện Tử', 'hg', 0, 10, 0, 0),
+(4, 'Điện Thoại Xiaomi Redmi 7A (2GB/16GB) - Hàng Chính Hãng', 'dien-thoai-xiaomi-redmi-7a-2gb-16gb-hang-chinh-hang', 5000000, 0, 1, 0, 0, 'review_1.jpg', NULL, 'u', 'Điện Thoại Xiaomi Redmi 7A (2GB/16GB) - Hàng Chính Hãng', 1, 3, '2020-02-07 04:00:13', '2020-02-07 04:00:13', 'Điện Thoại Xiaomi Redmi 7A (2GB/16GB) - Hàng Chính Hãng', 'u', 0, 10, 0, 0),
+(5, 'Điện Thoại iPhone 11 128GB - Hàng Chính Hãng', 'dien-thoai-iphone-11-128gb-hang-chinh-hang', 10000000, 20, 1, 0, 0, 'fcuN_best_1.png', NULL, 'g', 'fd', 1, 3, '2020-02-07 04:01:23', '2020-02-07 04:01:23', 'fd', 'fgd', 0, 10, 0, 0),
+(6, 'Điện Thoại iPhone 8 Plus - Hàng Chính Hãng VN/A', 'dien-thoai-iphone-8-plus-hang-chinh-hang-vn-a', 7000000, 0, 1, 0, 0, 'banner_product.png', NULL, 'gf', 'f', 1, 3, '2020-02-07 04:01:59', '2020-02-07 04:01:59', 'g', 'gf', 0, 10, 0, 0),
+(7, 'Điện Thoại iPhone 11 Pro Max 64GB - Hàng Nhập Khẩu', 'dien-thoai-iphone-11-pro-max-64gb-hang-nhap-khau', 6000000, 50, 1, 0, 0, 'featured_1.png', NULL, 'ff', 'd', 1, 3, '2020-02-07 04:02:42', '2020-02-07 04:02:42', 'fd', 'd', 0, 10, 0, 0),
+(8, 'Điện Thoại iPhone 11 Pro 64GB - Hàng Chính Hãng', 'dien-thoai-iphone-11-pro-64gb-hang-chinh-hang', 4000000, 20, 1, 0, 0, 'featured_6.png', NULL, 'df', 'd', 1, 3, '2020-02-07 04:03:22', '2020-02-07 04:03:22', 'df', 'fds', 0, 10, 0, 0),
+(9, 'Điện Thoại iPhone 10 128GB - Hàng Chính Hãng', 'dien-thoai-iphone-10-128gb-hang-chinh-hang', 9000000, 20, 1, 0, 0, 'new_6.jpg', NULL, 'ds', 'yt', 1, 3, '2020-02-07 04:04:23', '2020-02-07 04:04:23', 'd', 'fsd', 0, 20, 0, 0),
+(10, 'Điện Thoại iPhone 11 158GB - Hàng Chính Hãng', 'dien-thoai-iphone-11-158gb-hang-chinh-hang', 5000000, 20, 1, 0, 0, 'new_2.jpg', NULL, 'fds', 'fd', 1, 3, '2020-02-07 04:05:04', '2020-02-07 04:05:04', 'fds', 'fsd', 0, 10, 0, 0),
+(11, 'Điện Thoại iPhone 01 128GB - Hàng Chính Hãng', 'dien-thoai-iphone-01-128gb-hang-chinh-hang', 7500000, 20, 1, 0, 0, 'new_7.jpg', NULL, 'fd', 'f', 1, 3, '2020-02-07 04:05:41', '2020-02-07 04:05:41', 'g', 'gdf', 0, 10, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -152,6 +240,47 @@ CREATE TABLE `product_images` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `rating`
+--
+
+CREATE TABLE `rating` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `product_id` int(11) NOT NULL DEFAULT '0',
+  `number` tinyint(4) NOT NULL DEFAULT '0',
+  `content` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `rating`
+--
+
+INSERT INTO `rating` (`id`, `product_id`, `number`, `content`, `user_id`, `created_at`, `updated_at`) VALUES
+(34, 2, 3, 'đẹp', 1, '2020-02-02 08:46:19', '2020-02-02 08:46:19');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `transaction`
+--
+
+CREATE TABLE `transaction` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `total` int(11) NOT NULL DEFAULT '0',
+  `note` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `users`
 --
 
@@ -161,8 +290,15 @@ CREATE TABLE `users` (
   `password` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phone` int(11) DEFAULT NULL,
+  `address` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `about` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `avatar` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active` tinyint(11) NOT NULL DEFAULT '1',
+  `total_pay` int(11) DEFAULT '0',
+  `code` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `time_code` timestamp NULL DEFAULT NULL,
+  `code_active` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `time_active` timestamp NULL DEFAULT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -172,14 +308,20 @@ CREATE TABLE `users` (
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `password`, `email`, `phone`, `avatar`, `active`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin', '123456', 'lengocthinh006@gmail.com', NULL, NULL, 1, NULL, NULL, NULL),
-(2, 'dsd', '$2y$10$fCHL6VTJBF6b486sDA7CN.QwCc2PPYTb5l5ZOKGVGdvaZGDkyJATW', 'fsd@dsa', 901274536, NULL, 1, NULL, '2020-01-08 01:37:03', '2020-01-08 01:37:03'),
-(3, 'tung', '$2y$10$LmBOwelJOER6Cnc93G5RgOHUgcjLQmYC3JGXwxsNWVt1emK6Y2t..', 'admin@abc', 12345678, NULL, 1, 'pk273ahYqLpRD5bSqD2Upk951Npk49obfPmMUhoAzHmk44yF4NRcw2H7CRtR', '2020-01-08 02:01:27', '2020-01-08 02:01:27');
+INSERT INTO `users` (`id`, `name`, `password`, `email`, `phone`, `address`, `about`, `avatar`, `active`, `total_pay`, `code`, `time_code`, `code_active`, `time_active`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'xeko', '$2y$10$IyuT3SzWkzDUTI.a0t7hzerURyudFBZmxeOnif66TVrML./Z/MLx.', 'xeko@abc', 90124538, 'bến tre', 'hay', NULL, 1, 2, '$2y$10$WfqqceqTqBj0EWHRfIzTKu0rs4e6WNPXUXow4.LDD7EKvLRs6CLUy', '2020-02-05 03:22:12', NULL, NULL, 'UrYNbQipa6wd8ymemj47l52mOcX5KbGLWTWoS4T5cLJ1qX26QLAf51nlaBQV', '2020-01-21 04:07:30', '2020-02-05 03:22:12'),
+(9, 'Hao Le', '$2y$10$.aiq5yDSBeBlWUZxaaOBBus61/xBSgLXkKMGSgGceLyxF6G74xXqG', 'lengocthinh004@gmail.com', 45646546, NULL, NULL, NULL, 2, 0, '$2y$10$vGG8kjZvIBGfzgFR3pnAYeHT1UU32gsspx0k88d8VspzjRsqjOq1a', '2020-02-06 07:50:18', '$2y$10$rYlc9lpslyoeRK3ixqGDsu9jnizXkTnQvdMtxl2Td4talcebbNbSu', '2020-02-06 07:47:54', 'jZ1bORyShvJJYpwQrJb0gjFOKt4q4lWsRcP9y1ZVkrYrj2MR6mhTQMB7wEJc', '2020-02-06 07:47:54', '2020-02-06 07:50:55');
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
+
+--
+-- Chỉ mục cho bảng `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `admin_active_index` (`active`);
 
 --
 -- Chỉ mục cho bảng `cates`
@@ -187,6 +329,12 @@ INSERT INTO `users` (`id`, `name`, `password`, `email`, `phone`, `avatar`, `acti
 ALTER TABLE `cates`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `cates_name_unique` (`name`);
+
+--
+-- Chỉ mục cho bảng `contact`
+--
+ALTER TABLE `contact`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `failed_jobs`
@@ -199,6 +347,14 @@ ALTER TABLE `failed_jobs`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `order`
+--
+ALTER TABLE `order`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_transaction_id_index` (`transaction_id`),
+  ADD KEY `order_product_id_index` (`product_id`);
 
 --
 -- Chỉ mục cho bảng `password_resets`
@@ -225,21 +381,51 @@ ALTER TABLE `product_images`
   ADD KEY `product_images_product_id_foreign` (`product_id`);
 
 --
+-- Chỉ mục cho bảng `rating`
+--
+ALTER TABLE `rating`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rating_product_id_index` (`product_id`),
+  ADD KEY `rating_user_id_index` (`user_id`);
+
+--
+-- Chỉ mục cho bảng `transaction`
+--
+ALTER TABLE `transaction`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `transaction_user_id_index` (`user_id`),
+  ADD KEY `transaction_status_index` (`status`);
+
+--
 -- Chỉ mục cho bảng `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_username_unique` (`name`);
+  ADD UNIQUE KEY `users_username_unique` (`name`),
+  ADD KEY `code` (`code`),
+  ADD KEY `code_active` (`code_active`);
 
 --
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
 
 --
+-- AUTO_INCREMENT cho bảng `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT cho bảng `cates`
 --
 ALTER TABLE `cates`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT cho bảng `contact`
+--
+ALTER TABLE `contact`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `failed_jobs`
@@ -251,13 +437,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT cho bảng `order`
+--
+ALTER TABLE `order`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `product_images`
@@ -266,10 +458,22 @@ ALTER TABLE `product_images`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT cho bảng `rating`
+--
+ALTER TABLE `rating`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT cho bảng `transaction`
+--
+ALTER TABLE `transaction`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
