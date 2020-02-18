@@ -234,6 +234,7 @@ div.section > div > input {margin:0;padding-left:5px;font-size:10px;padding-righ
             	</div>
             	
             </div>
+        <form method="post" id="comment_form">
           <div class="form_rating hidden">
           	  <div style="display: flex;margin-top: 15px">
             		<p style="margin-bottom: 0px">Chọn Đánh giá</p>
@@ -252,6 +253,8 @@ div.section > div > input {margin:0;padding-left:5px;font-size:10px;padding-righ
             	<a href="{{asset('ajax/danh-gia/'.$products->id)}}" class="js_rating_product" style="width: 200px;background-color: #288ad6;padding: 10px;color: white;border-radius: 5px">Gửi đánh giá</a>
             </div>
           </div>
+      </form>
+
         </div>
             <div class="component_list_rating">
             	@foreach($listrating as $item)
@@ -342,13 +345,18 @@ div.section > div > input {margin:0;padding-left:5px;font-size:10px;padding-righ
 		                if(data == "OK")
 		                {	
 		                	alert("Đánh giá thành công");
-		                	location.reload();
+                            $('#comment_form')[0].reset();
+		                	
 		                }
 		            },error:function(){ 
 		                alert("error!!!!");
 		            }
 		        });
 			}
+            else
+            {
+                alert('Chưa nhập nội dung');
+            }
 		});
 
         //luu san pham vua xem

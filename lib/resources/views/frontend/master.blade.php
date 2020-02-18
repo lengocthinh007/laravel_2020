@@ -17,6 +17,22 @@
 <link rel="stylesheet" type="text/css" href="styles/shop_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/shop_responsive.css">
 @yield('link')
+<style type="text/css">
+	#result {
+   position: absolute;
+   width: 100%;
+   max-width:870px;
+   cursor: pointer;
+   overflow-y: auto;
+   max-height: 400px;
+   box-sizing: border-box;
+   z-index: 1001;
+   top: 100%
+  }
+  .link-class:hover{
+   background-color:#f1f1f1;
+  }
+</style>
 </head>
 
 <body>
@@ -38,14 +54,14 @@
 						<div class="top_bar_content ml-auto">
 							<div class="top_bar_menu">
 								<ul class="standard_dropdown top_bar_dropdown">
-									<li>
+									<!-- <li>
 										<a href="#">English<i class="fas fa-chevron-down"></i></a>
 										<ul>
 											<li><a href="#">Italian</a></li>
 											<li><a href="#">Spanish</a></li>
 											<li><a href="#">Japanese</a></li>
 										</ul>
-									</li>
+									</li> -->
 									@if(Auth::check())
 									<li>
 										<a href="#">{{ get_data_user('web','name') }}<i class="fas fa-chevron-down"></i></a>
@@ -78,19 +94,24 @@
 				<div class="row">
 
 					<!-- Logo -->
-					<div class="col-lg-2 col-sm-3 col-3 order-1">
+					<div class="col-lg-4 col-sm-3 col-3 order-1">
 						<div class="logo_container">
-							<div class="logo"><a href="#">OneTech</a></div>
+							<div class="logo"><a href="{{url('/')}}">OneTech</a></div>
 						</div>
 					</div>
 
 					<!-- Search -->
-					<div class="col-lg-6 col-12 order-lg-2 order-3 text-lg-left text-right">
+					<div class="col-lg-4 col-12 order-lg-2 order-3 text-lg-left text-right">
 						<div class="header_search">
 							<div class="header_search_content">
 								<div class="header_search_form_container">
 									<form action="{{route('tim-kiem')}}" class="header_search_form clearfix" method="get">
-										<input name="k" type="search" required="required" class="header_search_input" placeholder="Search for products...">
+										{{ csrf_field() }}
+									<input style="width: 100% !important;position: relative;" name="k" type="text" id="search_name" required="required" class="header_search_input" placeholder="Search for products...">
+									 <ul class="list-group" id="result">
+
+									 </ul>
+
 										<button type="submit" class="header_search_button trans_300" value="Submit"><img src="images/search.png" alt=""></button>
 									</form>
 								</div>
@@ -101,13 +122,13 @@
 					<!-- Wishlist -->
 					<div class="col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
 						<div class="wishlist_cart d-flex flex-row align-items-center justify-content-end">
-							<div class="wishlist d-flex flex-row align-items-center justify-content-end">
+						<!-- 	<div class="wishlist d-flex flex-row align-items-center justify-content-end">
 								<div class="wishlist_icon"><img src="images/heart.png" alt=""></div>
 								<div class="wishlist_content">
 									<div class="wishlist_text"><a href="#">Wishlist</a></div>
 									<div class="wishlist_count">115</div>
 								</div>
-							</div>
+							</div> -->
 
 							<!-- Cart -->
 							<div class="cart">
@@ -346,8 +367,76 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="plugins/Isotope/isotope.pkgd.min.js"></script>
 <script src="plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
 <script src="plugins/parallax-js-master/parallax.min.js"></script>
-<script src="js/shop_custom.js"></script>
-@yield('script')
+<!-- <script src="js/shop_custom.js"></script>
+ -->@yield('script')
+<script type="text/javascript">
+$(document).ready(function(){
+		var timeout = null;
+ 	$('#search_name').keyup(function(){ 
+ 		clearTimeout(timeout);
+ 		 var $this = $(this);
+ 		$('#result').html('');
+ 	  timeout = setTimeout(function ()
+	       {
+	      	  ajaxValidation($this);
+	       }, 500);
+    });
+
+
+    var ajaxValidation = function (object) {
+            var $this   = $(object);
+            var query   = $this.val();
+        if(query != '')
+	        {
+	         var _token = $('input[name="_token"]').val();
+	         $.ajax({
+			          url:"{{ route('autocomplete.fetch') }}",
+			          method:"POST",
+			          dataType : 'json',
+			          data:{query:query, _token:_token},
+			          success:function(result){
+			           $('#result').fadeIn(); 
+			           var html = '';
+			           if(result!='')
+			             {
+			             	$.each (result, function (key, item){
+                            html +=  '<li class="list-group-item link-class">';
+	           				 html +=  '<img src="../../public/hinh/'+item['image']+'" height="40" width="40" class="img-thumbnail" /> '+item['name']+' | <span class="text-muted">'+formatNumber(item['price'], '.', ',')+' VNĐ</span>';
+	                            html +=  '</li>';
+	                        });
+			             }
+			             else
+			             {
+			             	 html +=  '<li class="list-group-item link-class">Không có kết quả</li>';
+			             }
+			           $('#result').html(html);
+			          }
+		           });
+	     	 }
+       };
+
+    $(document).on('click', 'li', function(){  
+    	var click_text = $(this).text().split('|');
+    	// $('#search_name').val($.trim(click_text[0]));
+    	$('#search_name').val(click_text[0]);
+        // $('#search_name').val($(this).text());  
+        $('#result').fadeOut();
+    });  
+
+     function formatNumber(nStr, decSeperate, groupSeperate) {
+            nStr += '';
+            x = nStr.split(decSeperate);
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + groupSeperate + '$2');
+            }
+            return x1 + x2;
+        }
+
+});
+</script>
 </body>
 
 </html>

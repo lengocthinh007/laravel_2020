@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 07, 2020 lúc 09:10 AM
+-- Thời gian đã tạo: Th2 18, 2020 lúc 09:57 AM
 -- Phiên bản máy phục vụ: 10.1.38-MariaDB
 -- Phiên bản PHP: 7.3.2
 
@@ -97,8 +97,9 @@ CREATE TABLE `contact` (
 --
 
 INSERT INTO `contact` (`id`, `c_name`, `c_email`, `c_title`, `c_content`, `c_status`, `created_at`, `updated_at`) VALUES
-(1, 'nobita', 'nobita@abc', 'chào', 'hello', 0, NULL, NULL),
-(2, 'dsad', 'dsd', 'ds', 'dsds', 0, '2020-01-20 08:22:27', '2020-01-20 08:22:27');
+(5, 'Lê Tú', 'nobita@abc', 'Chào Admin', 'Tốt lắm', 1, '2020-02-13 08:52:54', '2020-02-13 08:53:21'),
+(6, 'Văn Lê', 'nobita@abc', 'Help me', 'Không có gì', 1, '2020-02-13 08:54:15', '2020-02-13 08:54:24'),
+(7, 'Hống Ân', 'nobita@abc', 'Hihi', 'Chào', 1, '2020-02-13 08:55:27', '2020-02-13 08:55:34');
 
 -- --------------------------------------------------------
 
@@ -212,7 +213,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `alias`, `price`, `pro_sale`, `pro_active`, `pro_hot`, `pro_view`, `image`, `keywords_seo`, `description`, `description_seo`, `user_id`, `cate_id`, `created_at`, `updated_at`, `pro_title_seo`, `pro_content`, `pro_pay`, `pro_number`, `pro_total_rating`, `pro_total_number`) VALUES
-(2, 'Điện Thoại Vsmart Star - Hàng chính hãng', 'dien-thoai-vsmart-star-hang-chinh-hang', 2000000, 30, 1, 0, 0, 'xwBv_view_3.jpg', NULL, 'i', 'hhhhhhhh', 1, 3, '2020-02-02 07:55:45', '2020-02-02 08:46:19', 'b', 'a', 0, 10, 1, 3),
+(2, 'Điện Thoại Vsmart Star - Hàng chính hãng', 'dien-thoai-vsmart-star-hang-chinh-hang', 2000000, 30, 1, 0, 0, 'xwBv_view_3.jpg', NULL, 'i', 'hhhhhhhh', 1, 3, '2020-02-02 07:55:45', '2020-02-13 09:09:26', 'b', 'a', 0, 10, 4, 13),
 (3, 'Điện Thoại Samsung Galaxy Note 10 Plus (256GB/12GB) - Hàng Chính Hãng - Đã Kích Hoạt Bảo Hành Điện Tử', 'dien-thoai-samsung-galaxy-note-10-plus-256gb-12gb-hang-chinh-hang-da-kich-hoat-bao-hanh-dien-tu', 3000000, 60, 1, 0, 0, 'view_2.jpg', NULL, 'i', 'u', 1, 3, '2020-02-07 03:59:06', '2020-02-07 03:59:06', 'Điện Thoại Samsung Galaxy Note 10 Plus (256GB/12GB) - Hàng Chính Hãng - Đã Kích Hoạt Bảo Hành Điện Tử', 'hg', 0, 10, 0, 0),
 (4, 'Điện Thoại Xiaomi Redmi 7A (2GB/16GB) - Hàng Chính Hãng', 'dien-thoai-xiaomi-redmi-7a-2gb-16gb-hang-chinh-hang', 5000000, 0, 1, 0, 0, 'review_1.jpg', NULL, 'u', 'Điện Thoại Xiaomi Redmi 7A (2GB/16GB) - Hàng Chính Hãng', 1, 3, '2020-02-07 04:00:13', '2020-02-07 04:00:13', 'Điện Thoại Xiaomi Redmi 7A (2GB/16GB) - Hàng Chính Hãng', 'u', 0, 10, 0, 0),
 (5, 'Điện Thoại iPhone 11 128GB - Hàng Chính Hãng', 'dien-thoai-iphone-11-128gb-hang-chinh-hang', 10000000, 20, 1, 0, 0, 'fcuN_best_1.png', NULL, 'g', 'fd', 1, 3, '2020-02-07 04:01:23', '2020-02-07 04:01:23', 'fd', 'fgd', 0, 10, 0, 0),
@@ -258,7 +259,9 @@ CREATE TABLE `rating` (
 --
 
 INSERT INTO `rating` (`id`, `product_id`, `number`, `content`, `user_id`, `created_at`, `updated_at`) VALUES
-(34, 2, 3, 'đẹp', 1, '2020-02-02 08:46:19', '2020-02-02 08:46:19');
+(34, 2, 3, 'đẹp', 1, '2020-02-02 08:46:19', '2020-02-02 08:46:19'),
+(35, 2, 4, 'dsadsdsds', 9, '2020-02-13 09:02:19', '2020-02-13 09:02:19'),
+(36, 2, 3, 'gâu', 9, '2020-02-13 09:07:45', '2020-02-13 09:07:45');
 
 -- --------------------------------------------------------
 
@@ -310,7 +313,17 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `password`, `email`, `phone`, `address`, `about`, `avatar`, `active`, `total_pay`, `code`, `time_code`, `code_active`, `time_active`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'xeko', '$2y$10$IyuT3SzWkzDUTI.a0t7hzerURyudFBZmxeOnif66TVrML./Z/MLx.', 'xeko@abc', 90124538, 'bến tre', 'hay', NULL, 1, 2, '$2y$10$WfqqceqTqBj0EWHRfIzTKu0rs4e6WNPXUXow4.LDD7EKvLRs6CLUy', '2020-02-05 03:22:12', NULL, NULL, 'UrYNbQipa6wd8ymemj47l52mOcX5KbGLWTWoS4T5cLJ1qX26QLAf51nlaBQV', '2020-01-21 04:07:30', '2020-02-05 03:22:12'),
-(9, 'Hao Le', '$2y$10$.aiq5yDSBeBlWUZxaaOBBus61/xBSgLXkKMGSgGceLyxF6G74xXqG', 'lengocthinh004@gmail.com', 45646546, NULL, NULL, NULL, 2, 0, '$2y$10$vGG8kjZvIBGfzgFR3pnAYeHT1UU32gsspx0k88d8VspzjRsqjOq1a', '2020-02-06 07:50:18', '$2y$10$rYlc9lpslyoeRK3ixqGDsu9jnizXkTnQvdMtxl2Td4talcebbNbSu', '2020-02-06 07:47:54', 'jZ1bORyShvJJYpwQrJb0gjFOKt4q4lWsRcP9y1ZVkrYrj2MR6mhTQMB7wEJc', '2020-02-06 07:47:54', '2020-02-06 07:50:55');
+(9, 'Hao Le', '$2y$10$.aiq5yDSBeBlWUZxaaOBBus61/xBSgLXkKMGSgGceLyxF6G74xXqG', 'lengocthinh004@gmail.com', 45646546, NULL, NULL, NULL, 2, 0, '$2y$10$vGG8kjZvIBGfzgFR3pnAYeHT1UU32gsspx0k88d8VspzjRsqjOq1a', '2020-02-06 07:50:18', '$2y$10$rYlc9lpslyoeRK3ixqGDsu9jnizXkTnQvdMtxl2Td4talcebbNbSu', '2020-02-06 07:47:54', 'aeB5SHR3v4YzIFyrVU0FtvT9K8HbtnphiDzebMlXNcKa0GZsGh3FLFIxuH2O', '2020-02-06 07:47:54', '2020-02-06 07:50:55'),
+(10, 'tung', '$2y$10$BXS85aLwb/aBIHoK4bK9n.m4U8CTzRT3gtlwiiv/MydrMGHsqrsRa', 'xbvsdgfd@fsdfds', 4224525, NULL, NULL, NULL, 1, 0, NULL, NULL, '$2y$10$DYCOH7APYEAFEiqCsavtOOtxkVLDHAn1Z/gGwVuZantKzv2SQX0BO', '2020-02-14 03:21:25', NULL, '2020-02-14 03:21:25', '2020-02-14 03:21:25'),
+(11, 'nobita', '$2y$10$6ga4.gkXV7lKpXI4MMADqubHEZcG2BLRnmH.AmyQzbDvLnWWl4tPW', 'nobita@abc', 2424345, NULL, NULL, NULL, 1, 0, NULL, NULL, '$2y$10$pejKLzo3NFkc8MdcYVvwZeNve5LG0FF7fZSkkaGfaysKePiDzixt.', '2020-02-14 03:21:43', NULL, '2020-02-14 03:21:43', '2020-02-14 03:21:43'),
+(12, 'dsd', '$2y$10$/J5mm4YItWy3DjN7xzQHMOgYwx28Sb/UXppzUXrx2inPvyDOmfL7K', 'nobita@abc', 524524524, NULL, NULL, NULL, 1, 0, NULL, NULL, '$2y$10$xt6X9nkqvAupXmhbMFIYRufOjR7IjS/Eq2MNtgd29gnZU2cykytAa', '2020-02-14 03:26:13', NULL, '2020-02-14 03:26:13', '2020-02-14 03:26:13'),
+(13, 'dsad', '$2y$10$Ww0xiMTNvF7JX27Bh9XN7utC6srq2eovjYvwcUnhxYUctGAwYHTFO', 'fsd@dsa', 12042, NULL, NULL, NULL, 1, 0, NULL, NULL, '$2y$10$2YVrs9u4LPrFg1.ay2q2c.Ax2ds4r0PvWbkdsjHELLKEwV7B7FfOq', '2020-02-15 08:59:31', NULL, '2020-02-15 08:59:31', '2020-02-15 08:59:31'),
+(14, 'fsdfsdf', '$2y$10$FivIhcXxO5R02QtF02/Hqu0h2bAXhhD/nMguuRwX7wbUAdt825VFO', 'xbvsdgfd@fsdfds', 2524, NULL, NULL, NULL, 1, 0, NULL, NULL, '$2y$10$5fOL4InIy9yqU0fcCFSigeJ.r39wKpyF3tTG9EIrRL2ilchT1xUfK', '2020-02-15 08:59:48', NULL, '2020-02-15 08:59:47', '2020-02-15 08:59:48'),
+(15, 'fsdfsd', '$2y$10$uIMCoNIEBAL.jl./MWNDw.VrOe6OHfUx/ZExZvsD1SsmkVpqiWE5W', 'lengocthinh004@gmail.com', 252524, NULL, NULL, NULL, 1, 0, NULL, NULL, '$2y$10$0Ha0taQ6.kkWgoXSWdrScOKUxjO0siCXg.QZEZa6VW3QGKAFci0dy', '2020-02-15 09:00:28', NULL, '2020-02-15 09:00:28', '2020-02-15 09:00:28'),
+(16, 'ds', 'dsdsad', 'dsads@dsdsds', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(17, 'dasds', 'dsadds', 'dssadds@dsdsa', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(18, 'dsdsa', 'dasdsd', 'dsdasd@ddssdsdsa', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(19, 'dasd', 'dsds', 'dsadsdsd@dsdasd', NULL, NULL, NULL, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -425,7 +438,7 @@ ALTER TABLE `cates`
 -- AUTO_INCREMENT cho bảng `contact`
 --
 ALTER TABLE `contact`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `failed_jobs`
@@ -461,7 +474,7 @@ ALTER TABLE `product_images`
 -- AUTO_INCREMENT cho bảng `rating`
 --
 ALTER TABLE `rating`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT cho bảng `transaction`
@@ -473,7 +486,7 @@ ALTER TABLE `transaction`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

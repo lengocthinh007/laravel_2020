@@ -14,9 +14,11 @@ class Contactcontroller extends Controller
       }
        public function postcontact(Request $request)
       {
-      	$data = $request->except('_token');
-      	$data['created_at'] = $data['updated_at'] = Carbon::now();
-      	Contact::insert($data);
-      	return redirect()->back();
+      	if($request->ajax())
+            {
+                  $data = $request->except('_token');
+                  $data['created_at'] = $data['updated_at'] = Carbon::now();
+                  Contact::insert($data);
+            }
       }
 }

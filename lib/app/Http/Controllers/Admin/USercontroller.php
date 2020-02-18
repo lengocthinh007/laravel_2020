@@ -8,16 +8,39 @@ use App\User;
 use App\Models\Transaction;
 use App\Models\products;
 use App\Models\cates;
+use DB;
 
 class USercontroller extends Controller
 {
      public function index(){
     	$user = User::whereraw(1);
-    	$user = $user->orderBy('id','DESC')->paginate(10);
+    	$user = $user->orderBy('id','DESC')->paginate(5);
     	$viewdata = [
-    		'user'=>$user
+    		'user'=>$user,
+            'query'=> ''
     	];
     	return view ('Backend.user.list',$viewdata);
+    }
+
+     function fetch_data(Request $request)
+    {
+     if($request->ajax())
+     {
+      $sort_by = $request->get('sortby');
+      $sort_type = $request->get('sorttype');
+            $query = $request->get('query');
+            $query = str_replace(" ", "%", $query);
+      $user = DB::table('users')
+                    ->where('id', 'like', '%'.$query.'%')
+                    ->orWhere('name', 'like', '%'.$query.'%')
+                    ->orderBy($sort_by, $sort_type)
+                    ->paginate(5);
+      $viewdata = [
+        'user' => $user,
+        'query'=>$request->query(),
+      ];
+      return view('Backend.user.pagination_data',$viewdata)->render();
+     }
     }
 
      public function tongquang(){

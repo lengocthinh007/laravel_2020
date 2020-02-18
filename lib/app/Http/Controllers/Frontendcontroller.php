@@ -134,4 +134,36 @@ class Frontendcontroller extends Controller
     	];
     	return view ('frontend.Details',$viewdata);
     }
+
+      function fetch(Request $request)
+    {
+     if($request->get('query'))
+     {
+      $query = $request->get('query');
+      $data = DB::table('products')
+        ->where('name', 'LIKE', "%{$query}%")
+        ->get();
+      $result = array();
+      if($data)
+      {
+        foreach ($data as $row) {
+            $result[] = array(
+            'name' => $row->name,
+            'image' => $row->image,
+            'price' => $row->price,
+        );
+        }
+      }
+      return json_encode($result);
+      // $output = '';
+      // foreach($data as $row)
+      //     {
+      //      $output .= '
+      //     <li class="list-group-item link-class"><img src="../../public/hinh/'.$row->image.'" height="40" width="40" class="img-thumbnail" /> '.$row->name.' | <span class="text-muted">'.$row->price.'</span></li>
+      //      ';
+      //     }
+      
+      // echo $output;
+     }
+    }
 }
